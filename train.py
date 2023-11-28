@@ -74,6 +74,7 @@ def train():
         cnt += 1
         anno = annotations[im_id]
         bboxes = anno['box_examples_coordinates']
+        dots = np.array(anno['points'])
 
         rects = list()
         for bbox in bboxes:
@@ -112,10 +113,13 @@ def train():
         cnt_err = abs(pred_cnt - gt_cnt)
         train_mae += cnt_err
         train_rmse += cnt_err ** 2
+        pbar.set_description('actual-predicted: {:6.1f}, {:6.1f}, error: {:6.1f}. Current MAE: {:5.2f}, RMSE: {:5.2f} Best VAL MAE: {:5.2f}, RMSE: {:5.2f}'.format( gt_cnt, pred_cnt, abs(pred_cnt - gt_cnt), train_mae/cnt, (train_rmse/cnt)**0.5,best_mae,best_rmse))
+        print("")
     train_loss = train_loss / len(im_ids)
     train_mae = (train_mae / len(im_ids))
     train_rmse = (train_rmse / len(im_ids))**0.5
     return train_loss,train_mae,train_rmse
+
 
 
    
@@ -165,8 +169,7 @@ def eval():
 
 best_mae, best_rmse = 1e7, 1e7
 stats = list()
-trainbar = tqdm(range(0,args.epochs))
-for epoch in trainbar:
+for epoch in range(0,args.epochs):
     regressor.train()
     train_loss,train_mae,train_rmse = train()
     regressor.eval()
@@ -185,7 +188,3 @@ for epoch in trainbar:
     print("Epoch {}, Avg. Epoch Loss: {} Train MAE: {} Train RMSE: {} Val MAE: {} Val RMSE: {} Best Val MAE: {} Best Val RMSE: {} ".format(
               epoch+1,  stats[-1][0], stats[-1][1], stats[-1][2], stats[-1][3], stats[-1][4], best_mae, best_rmse))
     
-
-
-
-
