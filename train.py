@@ -113,7 +113,6 @@ def train():
         cnt_err = abs(pred_cnt - gt_cnt)
         train_mae += cnt_err
         train_rmse += cnt_err ** 2
-        print("")
     train_loss = train_loss / len(im_ids)
     train_mae = (train_mae / len(im_ids))
     train_rmse = (train_rmse / len(im_ids))**0.5
