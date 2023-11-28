@@ -68,9 +68,9 @@ def train():
     train_mae = 0
     train_rmse = 0
     train_loss = 0
-    #pbar = tqdm(im_ids)
+    pbar = tqdm(im_ids)
     cnt = 0
-    for im_id in im_ids:
+    for im_id in pbar:
         cnt += 1
         anno = annotations[im_id]
         bboxes = anno['box_examples_coordinates']
