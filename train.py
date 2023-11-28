@@ -74,7 +74,6 @@ def train():
         cnt += 1
         anno = annotations[im_id]
         bboxes = anno['box_examples_coordinates']
-        dots = np.array(anno['points'])
 
         rects = list()
         for bbox in bboxes:
@@ -117,7 +116,6 @@ def train():
     train_mae = (train_mae / len(im_ids))
     train_rmse = (train_rmse / len(im_ids))**0.5
     return train_loss,train_mae,train_rmse
-
 
 
    
