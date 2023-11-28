@@ -68,9 +68,9 @@ def train():
     train_mae = 0
     train_rmse = 0
     train_loss = 0
-    pbar = tqdm(im_ids)
+    #pbar = tqdm(im_ids)
     cnt = 0
-    for im_id in pbar:
+    for im_id in im_ids:
         cnt += 1
         anno = annotations[im_id]
         bboxes = anno['box_examples_coordinates']
@@ -113,7 +113,6 @@ def train():
         cnt_err = abs(pred_cnt - gt_cnt)
         train_mae += cnt_err
         train_rmse += cnt_err ** 2
-        pbar.set_description('actual-predicted: {:6.1f}, {:6.1f}, error: {:6.1f}. Current MAE: {:5.2f}, RMSE: {:5.2f} Best VAL MAE: {:5.2f}, RMSE: {:5.2f}'.format( gt_cnt, pred_cnt, abs(pred_cnt - gt_cnt), train_mae/cnt, (train_rmse/cnt)**0.5,best_mae,best_rmse))
         print("")
     train_loss = train_loss / len(im_ids)
     train_mae = (train_mae / len(im_ids))
@@ -169,7 +168,8 @@ def eval():
 
 best_mae, best_rmse = 1e7, 1e7
 stats = list()
-for epoch in range(0,args.epochs):
+trainbar = tqdm(range(0,args.epochs))
+for epoch in trainbar:
     regressor.train()
     train_loss,train_mae,train_rmse = train()
     regressor.eval()
